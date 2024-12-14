@@ -1,0 +1,63 @@
+{% extends "container.html" %}
+{% block content%}
+
+    {% for item in items_on_page %}
+    {% if item.type == "income" %}
+        <div class="card p-1 my-3">
+            <div class="card-body">
+                <div class="row d-flex flex-row-reverse justify-content-around">
+                    <div class="col-md-3 d-flex align-items-center">
+                        <h3 class="card-title text-success"><span style="font-size:0.6em">$</span>{{ item.amount }}</h3>
+                    </div>
+                    <div class="col-md-5 justify-content-center">
+                        <p class="card-text my-1"><i class="bi bi-calendar"></i>  {{ item.date }} </p>
+                        <p class="card-text my-1"><i class="bi bi-person-check"></i>  {{ item.source }} </p>
+                        <p class="card-text text-muted my-1"><i class="bi bi-text-paragraph"></i>  {{ item.description }} </p>
+                    </div>
+                    <div class="col-md-3 d-flex flex-column justify-content-center">
+                        <a href="{{ url_for('update_item', id= item._id) }}" class="btn btn-outline-success btn-sm my-1"> Edit</a>
+                        <a href="{{ url_for('delete_item', id= item._id) }}" class="btn btn-outline-danger btn-sm my-1"> Delete</a>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    {% elif item.type == "expense" %}
+        <div class="card p-1 my-3">
+            <div class="card-body">
+                <div class="row d-flex flex-row-reverse justify-content-around">
+                    <div class="col-md-3 d-flex align-items-center"> <!-- naira &#8358; -->
+                        <h3 class="card-title text-danger"><span style="font-size:0.6em">-$</span>{{ item.amount }}</h3>
+                    </div>
+                    <div class="col-md-5 justify-content-center">
+                        <p class="card-text my-1"><i class="bi bi-calendar"></i>  {{ item.date }} </p>
+                        <p class="card-text my-1"><i class="bi bi-send"></i>  {{ item.beneficiary }} </p>
+                        <p class="card-text text-muted my-1"><i class="bi bi-text-paragraph"></i>  {{ item.description }} </p>
+                    </div>
+                    <div class="col-md-3 d-flex flex-column justify-content-center" >
+                        <a href="{{ url_for('update_item', id= item._id) }}" class="btn btn-outline-success btn-sm my-1"> Edit</a>
+                        <a href="{{ url_for('delete_item', id= item._id) }}" class="btn btn-outline-danger btn-sm my-1"> Delete</a>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    {% endif %}
+    {% endfor %}
+
+        <div class="my-5 d-flex justify-content-center">
+            <div>
+                {% if page > 1 %} 
+                    <a href="{{ url_for("show_finances", type_=type_, page=page-1) }}" class="btn btn-dark btn-sm">Previous</a>
+                {% endif %}
+                    <span class="mx-3"> Page {{ page }} of {{ total_pages }} </span>
+                {% if page < total_pages %} 
+                    <a href="{{ url_for("show_finances", type_=type_, page=page+1) }}" class="btn btn-dark btn-sm">Next</a>
+                {% endif %}
+            </div>
+        </div>
+        <br><br>
+
+{% endblock content %}
